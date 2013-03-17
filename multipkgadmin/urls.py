@@ -17,6 +17,5 @@ urlpatterns = patterns('',
 
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^account/', include('account.urls')),
-    url(r'^dns/', include('domain.urls')),
     url(r'^multipkg/', include('multipkg.urls')),
 )

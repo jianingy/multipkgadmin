@@ -1,4 +1,4 @@
-# Django settings for mystuffadmin project.
+# Django settings for multipkgadmin project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'mystuffadmin.db',                      # Or path to database file if using sqlite3.
+        'NAME': 'multipkgadmin.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -96,10 +96,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'mystuffadmin.urls'
+ROOT_URLCONF = 'multipkgadmin.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'mystuffadmin.wsgi.application'
+WSGI_APPLICATION = 'multipkgadmin.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -125,9 +125,8 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_tables2',
 
-    'mystuffadmin',
+    'multipkgadmin',
     'account',
-    'domain',
     'multipkg',
 )
 

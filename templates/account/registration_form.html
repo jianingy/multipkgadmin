@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content-wrapper narrow">
+    <h2>New User</h2>
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+            <ol>
+                {{ form.as_ul }}
+                <li id="send">
+                    <button type="submit">Register</button>
+                </li>
+            </ol>
+        </form>
+    </div>
+    {% endblock %}

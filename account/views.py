@@ -7,9 +7,9 @@ from django.shortcuts import render_to_response, redirect
 from django.http import HttpResponse
 from django.core.context_processors import csrf
 from django.template import RequestContext
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 from django import forms
-from account.forms import UserForm
+from account.forms import UserForm, RegistrationForm
 
 
 class LoginForm(forms.Form):
@@ -40,6 +40,11 @@ def logout(request):
     return redirect('account.views.login')
 
 
+def registration_success(request):
+    c = RequestContext(request)
+    return render_to_response("account/registration_success.html", c)
+
+
 class UserView(UpdateView):
 
     form_class = UserForm
@@ -64,4 +69,29 @@ class UserView(UpdateView):
             return self.render_to_response(self.get_context_data(form=form))
 
 
+class RegistrationView(CreateView):
+
+    form_class = RegistrationForm
+    model = User
+    template_name = "account/registration_form.html"
+    success_url = "account.views.registration_success"
+
+    def get_object(self, queryset=None):
+        obj = User.objects.get(username=self.request.user)
+        return obj
+
+    def form_valid(self, form):
+        if form.is_valid():
+            # if password1 exists, change password, otherwise
+            # leave it
+            if form.cleaned_data['password1']:
+                self.object = form.save(commit=False)
+                self.object.set_password(form.cleaned_data['password1'])
+            self.object.save()
+            return redirect(self.get_success_url())
+        else:
+            return self.render_to_response(self.get_context_data(form=form))
+
+
 profile = login_required(UserView.as_view())
+registration = RegistrationView.as_view()

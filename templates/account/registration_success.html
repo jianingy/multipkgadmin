@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block header %}
+<meta http-equiv="refresh" content="3;url={% url account.views.profile %}" />
+{% endblock %}
+{% block content %}
+<div class="content-wrapper">
+<h3>Registration Successful</h3>
+<p>Thanks for your registration. You will be redirect to login page in 3 seconds. </p>
+<p>If it doesn't redirect, please <a href="{% url account.views.profile %}">click here</a></p>
+</div>
+{% endblock %}

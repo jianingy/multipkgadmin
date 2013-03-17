@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     'south',
     'debug_toolbar',
     'django_tables2',
+    'social_auth',
 
     'multipkgadmin',
     'account',
@@ -160,14 +161,33 @@ LOGGING = {
 }
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.request',)
 from django.conf.global_settings import AUTHENTICATION_BACKENDS
-AUTHENTICATION_BACKENDS += ('django_auth_ldap.backend.LDAPBackend',)
 
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+    'social_auth.context_processors.social_auth_by_name_backends',
+    'social_auth.context_processors.social_auth_backends',
+    'social_auth.context_processors.social_auth_by_type_backends',
+    'social_auth.context_processors.social_auth_login_redirect',
+)
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 AUTH_PROFILE_MODULE = 'account.UserProfile'
-LOGIN_URL = "/account/login"
+LOGIN_URL          = "/account/login"
+LOGIN_REDIRECT_URL = '/account/profile'
+LOGIN_ERROR_URL    = '/login-error/'
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.twitter.TwitterBackend',
+    'social_auth.backends.facebook.FacebookBackend',
+    'social_auth.backends.google.GoogleBackend',
+    'social_auth.backends.yahoo.YahooBackend',
+    'social_auth.backends.browserid.BrowserIDBackend',
+    'social_auth.backends.OpenIDBackend',
+    'django_auth_ldap.backend.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
 
 try:
     from local_settings import *

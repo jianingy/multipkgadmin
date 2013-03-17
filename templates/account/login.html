@@ -10,5 +10,12 @@
             </li>
         </ol>
     </form>
+
+    Social Connect Login:
+    <a href="{% url socialauth_begin "openid" %}/jianingy.yang@gmail.com">OpenID</a> |
+    <a href="{% url socialauth_begin "twitter" %}">twitter</a> |
+    <a href="{% url socialauth_begin "facebook" %}">facebook</a> |
+    <a href="{% url socialauth_begin "google" %}">google</a>
+
 </div>
 {% endblock %}

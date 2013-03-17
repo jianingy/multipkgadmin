@@ -18,4 +18,5 @@ urlpatterns = patterns('',
     url(r'^grappelli/', include('grappelli.urls')),
     url(r'^account/', include('account.urls')),
     url(r'^multipkg/', include('multipkg.urls')),
+    url(r'', include('social_auth.urls')),
 )

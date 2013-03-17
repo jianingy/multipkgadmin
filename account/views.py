@@ -9,6 +9,7 @@ from django.core.context_processors import csrf
 from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView
 from django import forms
+from django.conf import settings
 from account.forms import UserForm, RegistrationForm
 
 
@@ -22,7 +23,7 @@ def login(request):
     c.update(csrf(request))
     username = request.POST.get('username', None)
     password = request.POST.get('password', None)
-    next_page = request.GET.get('next', '/')
+    next_page = request.GET.get('next', settings.LOGIN_REDIRECT_URL)
     user = authenticate(username=username, password=password)
     if user is not None:
         if user.is_active:

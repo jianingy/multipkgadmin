@@ -161,6 +161,9 @@ LOGGING = {
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 TEMPLATE_CONTEXT_PROCESSORS += ('django.core.context_processors.request',)
+from django.conf.global_settings import AUTHENTICATION_BACKENDS
+AUTHENTICATION_BACKENDS += ('django_auth_ldap.backend.LDAPBackend',)
+
 
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 AUTH_PROFILE_MODULE = 'account.UserProfile'

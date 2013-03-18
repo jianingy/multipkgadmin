@@ -1,4 +1,5 @@
 django
+django-auth-ldap
 django-tables2
 django-debug-toolbar
 south

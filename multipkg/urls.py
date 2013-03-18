@@ -11,7 +11,7 @@ from django.conf.urls import patterns, url
 # from django.views.generic.base import TemplateView
 
 urlpatterns = patterns('multipkg.views',
-                       url(r'^$', 'list_view', name='multipkg/home'),
+                       url(r'^$', 'list_view', name='multipkg_home'),
                        url(r'^create/$', 'create_view'),
                        url(r'^comment/$', 'comment_view'),
                        url(r'^sync/(?P<pk>[^/]+)/$', 'sync_view'),

@@ -59,7 +59,7 @@ class PackageDetailView(DetailView):
 class PackageCreateView(CreateView):
     form_class = PackageCreateForm
     template_name = 'multipkg/create.html'
-    success_url = reverse_lazy('multipkg/home')
+    success_url = reverse_lazy('multipkg_home')
 
     def get_initial(self):
         initial = super(PackageCreateView, self).get_initial()

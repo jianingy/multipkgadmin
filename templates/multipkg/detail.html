@@ -2,7 +2,7 @@
 
 {% block multipkg_content %}
 <div class="operation right">
-    <a href="{% url multipkg/home %}"> multipkg home </a> | <a href="{% url multipkg.views.sync_view pk=object.pk %}" > refresh package information </a>
+    <a href="{% url 'multipkg_home' %}"> multipkg home </a> | <a href="{% url 'multipkg.views.sync_view' pk=object.pk %}" > refresh package information </a>
 </div>
 <h2>package details: <i>{{ object.name }} {{ object.version }}-{{ object.release }}</i></h2>
 <table class="package-detail">
@@ -50,7 +50,7 @@
 
 <h3> Latest Comments </h3>
 <div>
-    <form class="form" action="{% url multipkg.views.comment_view %}" method="POST">
+    <form class="form" action="{% url 'multipkg.views.comment_view' %}" method="POST">
         {% csrf_token %}
         <ol>
             <li><textarea name="comment" class="comment"></textarea></li>
@@ -65,7 +65,7 @@
             {{ comment.comment }}
             <div class="delete">
                 {% if comment.author == request.user %}
-                <a onclick="return delete_comment();" href="{% url multipkg.views.comment_delete_view pk=comment.id %}">delete</a>
+                <a onclick="return delete_comment();" href="{% url 'multipkg.views.comment_delete_view' pk=comment.id %}">delete</a>
                 {% endif %}
             </div>
         </div>

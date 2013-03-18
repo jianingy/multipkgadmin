@@ -18,7 +18,7 @@
                         <ul class="nav">
                             <li><a href="/">Home</a></li>
                             <li class="{% active_by_name request 'multipkg_home' %}">
-                                <a href="{% url multipkg_home %}">Packages</a>
+                                <a href="{% url 'multipkg_home' %}">Packages</a>
                             </li>
                             <li><a href="/about">About Us</a></li>
                         </ul>
@@ -26,12 +26,12 @@
                             <li class="divider-vertical"></li>
                             {% if user.username %}
                             <li class="{% active_by_name request 'account/profile' %}">
-                                <a href="{% url account.views.profile %}">my profile</a>
+                                <a href="{% url 'account.views.profile' %}">my profile</a>
                             </li>
-                            <li><a href="{% url account.views.logout %}">log out</a></li>
+                            <li><a href="{% url 'account.views.logout' %}">log out</a></li>
                             {% else %}
-                            <li><a href="{% url account.views.login %}">log in</a></li>
-                            <li><a href="{% url account.views.registration %}">sign up</a></li>
+                            <li><a href="{% url 'account.views.login' %}">log in</a></li>
+                            <li><a href="{% url 'account.views.registration' %}">sign up</a></li>
                             {% endif %}
                         </ul>
                     </div>

@@ -4,7 +4,7 @@
 {% block multipkg_content %}
 <h2>my packages</h2>
 <div class="operation">
-    <a href="{% url multipkg.views.create_view %}" ><img src="{{ STATIC_URL }}img/create.png" /> submit a package </a>
+    <a href="{% url 'multipkg.views.create_view' %}" ><img src="{{ STATIC_URL }}img/create.png" /> submit a package </a>
 </div>
 <h3>Search Criteria</h3>
 <form class="form search_form" method="GET">

@@ -1,9 +1,9 @@
 pyYAML
-django>=1.5.1
-django-auth-ldap>=2.0
-django-tables2>=0.13.0
+django>=1.5
+django-auth-ldap
+django-tables2
 django-debug-toolbar
-south>=0.7.6
-django-grappelli>=2.4.4
+south
+django-grappelli
 Mercurial
 python-hglib

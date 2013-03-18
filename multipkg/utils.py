@@ -12,9 +12,13 @@ from os.path import join as path_join
 from yaml import load as yaml_load
 from shutil import rmtree
 import datetime
+import errno
 
 
-class RemotePackageNotExistsError(Exception):
+class RemotePackageNotFoundError(Exception):
+    pass
+
+class IndexNotFoundError(Exception):
     pass
 
 
@@ -42,9 +46,12 @@ def get_yaml_from_subversion(vcs_address):
     except pysvn.ClientError as e:
         message, code = e.args[1][0]
         if code == 170000:
-            raise RemotePackageNotExistsError(vcs_address)
+            raise RemotePackageNotFoundError(vcs_address)
         else:
             raise
+    except IOError as e:
+        if e.errno == errno.ENOENT:
+            raise IndexNotFoundError('index.yaml not found')
     finally:
         rmtree(vtemp)
 
@@ -70,7 +77,11 @@ def get_yaml_from_mercurial(vcs_address):
         yaml['.'] = dict(recent_changes="\n".join(recent_changes))
         return yaml
     except HTTPError:
-        raise RemotePackageNotExistsError(vcs_address)
+        raise RemotePackageNotFoundError(vcs_address)
+    except IOError as e:
+        print e.message
+        if e.errno == errno.ENOENT:
+            raise IndexNotFoundError('index.yaml not found')
     except:
         raise
     finally:

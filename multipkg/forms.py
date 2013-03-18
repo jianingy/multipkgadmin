@@ -11,7 +11,7 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from multipkg.models import Package, Comment
 from multipkg.models import VCS_SUBVERSION, VCS_MERCURIAL
-from multipkg.utils import RemotePackageNotExistsError
+from multipkg.utils import RemotePackageNotFoundError, IndexNotFoundError
 from multipkg.utils import get_yaml_from_subversion
 from multipkg.utils import get_yaml_from_mercurial
 
@@ -35,8 +35,10 @@ class PackageCreateForm(forms.ModelForm):
                 yaml = get_yaml_from_subversion(cleaned_data['vcs_address'])
             elif cleaned_data['vcs_type'] == VCS_MERCURIAL:
                 yaml = get_yaml_from_mercurial(cleaned_data['vcs_address'])
-        except RemotePackageNotExistsError as e:
-            raise forms.ValidationError(_('cannot import package from "%s"')
+        except IndexNotFoundError as e:
+            raise forms.ValidationError(e)
+        except RemotePackageNotFoundError as e:
+            raise forms.ValidationError(_('"%s" does not exists')
                                         % e.message)
         except:
             raise

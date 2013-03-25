@@ -86,3 +86,22 @@ def get_yaml_from_mercurial(vcs_address):
         raise
     finally:
         rmtree(vtemp)
+
+
+def get_yaml_from_git(vcs_address):
+    from subprocess import check_call, check_output
+    # XXX: implement a check_output for python 2.6
+    vtemp = mkdtemp(prefix='multipkg-vcs-')
+    try:
+        check_call(['git', 'clone', vcs_address, vtemp])
+        # get index.yaml
+        path_to_yaml = path_join(vtemp, 'index.yaml')
+        yaml = yaml_load(file(path_to_yaml).read())
+        recent_changes = []
+        recent_changes = check_output(['git', 'log', '-5', '--pretty=short'])
+        yaml['.'] = dict(recent_changes=recent_changes)
+        return yaml
+    except:
+        raise
+    finally:
+        rmtree(vtemp)

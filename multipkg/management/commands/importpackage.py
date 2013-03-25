@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 from optparse import make_option
 from multipkg.utils import get_yaml_from_subversion
 from multipkg.utils import get_yaml_from_mercurial
+from multipkg.utils import get_yaml_from_git
+from multipkg.model import VCS_SUBVERSION, VCS_GIT, VCS_MERCURIAL
 
 
 class Command(BaseCommand):
@@ -30,8 +32,13 @@ class Command(BaseCommand):
 
         if vcs_type == 'subversion':
             yaml = get_yaml_from_subversion(vcs_address)
+            vcs_type = VCS_SUBVERSION
         elif vcs_type == 'mercurial':
             yaml = get_yaml_from_mercurial(vcs_address)
+            vcs_type = VCS_MERCURIAL
+        elif vcs_type == 'git':
+            yaml = get_yaml_from_git(vcs_address)
+            vcs_type = VCS_GIT
         else:
             raise Exception('unknown vcs_type')
 
@@ -41,4 +48,5 @@ class Command(BaseCommand):
                                 sync_fields))
         package = Package(**package_args)
         package.owner = User.objects.get(username=options['user'])
+        package.vcs_type = vcs_type
         package.save()

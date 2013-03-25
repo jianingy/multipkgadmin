@@ -17,14 +17,14 @@ VCS_TYPE_STRING = ('Subversion', 'Git', 'Mercurial')
 
 class Package(models.Model):
     name           = models.CharField(_('name'), max_length=255,
-                                     unique=True, db_index=True)
+                                      unique=True, db_index=True)
     version        = models.CharField(_('version'), max_length=255)
     release        = models.CharField(_('release'), max_length=255)
     build          = models.CharField(_('build'), max_length=255)
     summary        = models.TextField(_('summary'), null=True, blank=True)
     vcs_type       = models.IntegerField(_('VCS type'),
-                                        choices=VCS_TYPE,
-                                        default=0)
+                                         choices=VCS_TYPE,
+                                         default=0)
     vcs_address    = models.CharField(_('VCS address'), max_length=512)
     owner          = models.ForeignKey(User)
     quality        = models.IntegerField(_('Quality'), default=0)

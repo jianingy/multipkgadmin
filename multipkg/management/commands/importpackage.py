@@ -14,7 +14,7 @@ from optparse import make_option
 from multipkg.utils import get_yaml_from_subversion
 from multipkg.utils import get_yaml_from_mercurial
 from multipkg.utils import get_yaml_from_git
-from multipkg.model import VCS_SUBVERSION, VCS_GIT, VCS_MERCURIAL
+from multipkg.models import VCS_SUBVERSION, VCS_GIT, VCS_MERCURIAL
 
 
 class Command(BaseCommand):
@@ -49,4 +49,5 @@ class Command(BaseCommand):
         package = Package(**package_args)
         package.owner = User.objects.get(username=options['user'])
         package.vcs_type = vcs_type
+        package.vcs_address = vcs_address
         package.save()

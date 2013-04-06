@@ -11,11 +11,13 @@
         </ol>
     </form>
 
-    Social Connect Login:
-    <a href="{% url socialauth_begin "openid" %}/jianingy.yang@gmail.com">OpenID</a> |
-    <a href="{% url socialauth_begin "twitter" %}">twitter</a> |
-    <a href="{% url socialauth_begin "facebook" %}">facebook</a> |
-    <a href="{% url socialauth_begin "google" %}">google</a>
+    <p class="note">
+        Don't have an account? <a href="{% url 'account_register' %}">Sign up Now!</a> or Login with
+    </p>
+    <p class="note">
+        <a href="{% url 'socialauth_begin' 'github' %}"><img src="http://github.com/favicon.ico" height="16" /> Login with Github </a>
+        <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img src="http://google.com/favicon.ico" height="16" /> Login with Google </a>
+    </p>
 
 </div>
 {% endblock %}

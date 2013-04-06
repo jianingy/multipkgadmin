@@ -161,7 +161,6 @@ LOGGING = {
 }
 
 from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
-from django.conf.global_settings import AUTHENTICATION_BACKENDS
 
 TEMPLATE_CONTEXT_PROCESSORS += (
     'django.core.context_processors.request',
@@ -171,25 +170,21 @@ TEMPLATE_CONTEXT_PROCESSORS += (
     'social_auth.context_processors.social_auth_login_redirect',
 )
 
-ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
-AUTH_PROFILE_MODULE = 'account.UserProfile'
-LOGIN_URL          = "/account/login"
-LOGIN_REDIRECT_URL = '/account/profile'
-LOGIN_ERROR_URL    = '/login-error/'
-SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
-
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleBackend',
-    'social_auth.backends.yahoo.YahooBackend',
-    'social_auth.backends.browserid.BrowserIDBackend',
-    'social_auth.backends.OpenIDBackend',
-    'django_auth_ldap.backend.LDAPBackend',
+    'social_auth.backends.google.GoogleOAuth2Backend',
+    'social_auth.backends.contrib.github.GithubBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
+ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
+AUTH_PROFILE_MODULE = 'account.UserProfile'
+LOGIN_URL          = "/account/login"
+LOGIN_REDIRECT_URL = '/'
+LOGIN_ERROR_URL    = '/login-error/'
+SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
+
 try:
     from local_settings import *
-except ImportError:
+except ImportError as e:
+    print str(e)
     pass

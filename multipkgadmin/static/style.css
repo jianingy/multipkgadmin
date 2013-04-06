@@ -411,3 +411,9 @@ h4 span {
 .search_form {
    margin-bottom: 20px;
 }
+
+.note {
+   font-size: 80%;
+   line-height: 120%;
+   text-align: center;
+}

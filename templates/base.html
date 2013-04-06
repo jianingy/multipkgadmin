@@ -23,9 +23,10 @@
                             <li><a href="/about">About Us</a></li>
                         </ul>
                         <ul class="nav pull-right">
-                            <li class="divider-vertical"></li>
+
                             {% if user.username %}
-                            <li class="{% active_by_name request 'account/profile' %}">
+                            <li>welcome, {{ user.username }}</li>
+                            <li class="{% active_by_name request 'account_profile' %}">
                                 <a href="{% url 'account.views.profile' %}">my profile</a>
                             </li>
                             <li><a href="{% url 'account.views.logout' %}">log out</a></li>

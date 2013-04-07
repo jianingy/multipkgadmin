@@ -1,5 +1,6 @@
 pyYAML
 django>=1.5
+django-social-auth
 django-auth-ldap
 django-tables2
 django-debug-toolbar

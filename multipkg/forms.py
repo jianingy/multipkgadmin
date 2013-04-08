@@ -10,10 +10,11 @@ __author__ = 'Jianing Yang <jianingy.yang AT gmail DOT com>'
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from multipkg.models import Package, Comment
-from multipkg.models import VCS_SUBVERSION, VCS_MERCURIAL
+from multipkg.models import VCS_SUBVERSION, VCS_MERCURIAL, VCS_GIT
 from multipkg.utils import RemotePackageNotFoundError, IndexNotFoundError
 from multipkg.utils import get_yaml_from_subversion
 from multipkg.utils import get_yaml_from_mercurial
+from multipkg.utils import get_yaml_from_git
 
 
 class PackageCreateForm(forms.ModelForm):
@@ -32,9 +33,14 @@ class PackageCreateForm(forms.ModelForm):
 
         try:
             if cleaned_data['vcs_type'] == VCS_SUBVERSION:
-                yaml = get_yaml_from_subversion(cleaned_data['vcs_address'])
+                yaml = get_yaml_from_subversion(cleaned_data['vcs_address'],
+                                                cleaned_data['vcs_subdir'])
             elif cleaned_data['vcs_type'] == VCS_MERCURIAL:
-                yaml = get_yaml_from_mercurial(cleaned_data['vcs_address'])
+                yaml = get_yaml_from_mercurial(cleaned_data['vcs_address'],
+                                               cleaned_data['vcs_subdir'])
+            elif cleaned_data['vcs_type'] == VCS_GIT:
+                yaml = get_yaml_from_git(cleaned_data['vcs_address'],
+                                         cleaned_data['vcs_subdir'])
         except IndexNotFoundError as e:
             raise forms.ValidationError(e)
         except RemotePackageNotFoundError as e:
@@ -81,7 +87,7 @@ class PackageCreateForm(forms.ModelForm):
 
     class Meta:
         model = Package
-        fields = ('vcs_type', 'vcs_address')
+        fields = ('vcs_type', 'vcs_address', 'vcs_subdir')
 
 
 class CommentCreateForm(forms.ModelForm):

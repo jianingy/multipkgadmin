@@ -22,10 +22,13 @@ class Package(models.Model):
     release        = models.CharField(_('release'), max_length=255)
     build          = models.CharField(_('build'), max_length=255)
     summary        = models.TextField(_('summary'), null=True, blank=True)
-    vcs_type       = models.IntegerField(_('VCS type'),
+    vcs_type       = models.IntegerField(_('version control system'),
                                          choices=VCS_TYPE,
                                          default=0)
-    vcs_address    = models.CharField(_('VCS address'), max_length=512)
+    vcs_address    = models.CharField(_('version control base address'),
+                                      max_length=512)
+    vcs_subdir     = models.CharField(_('package directory'),
+                                      max_length=512, null=True, blank=True)
     owner          = models.ForeignKey(User)
     quality        = models.IntegerField(_('Quality'), default=0)
     update_key     = models.CharField(_('update_key'), max_length=32,

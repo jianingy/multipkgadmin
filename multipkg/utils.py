@@ -22,7 +22,7 @@ class IndexNotFoundError(Exception):
     pass
 
 
-def get_yaml_from_subversion(vcs_address):
+def get_yaml_from_subversion(vcs_address, vcs_subdir):
     import pysvn
 
     vtemp = mkdtemp(prefix='multipkg-vcs-')
@@ -31,7 +31,7 @@ def get_yaml_from_subversion(vcs_address):
     try:
         client.checkout(vcs_address, vtemp, depth=pysvn.depth.empty)
         # get index.yaml
-        path_to_yaml = path_join(vtemp, 'index.yaml')
+        path_to_yaml = path_join(vtemp, vcs_subdir, 'index.yaml')
         client.update(path_to_yaml)
         yaml = yaml_load(file(path_to_yaml).read())
         recent_changes = []
@@ -56,7 +56,7 @@ def get_yaml_from_subversion(vcs_address):
         rmtree(vtemp)
 
 
-def get_yaml_from_mercurial(vcs_address):
+def get_yaml_from_mercurial(vcs_address, vcs_subdir):
     from mercurial import ui, commands
     from urllib2 import HTTPError
     import hglib
@@ -66,7 +66,7 @@ def get_yaml_from_mercurial(vcs_address):
         commands.clone(ui.ui(), str(vcs_address), dest=vtemp)
         client = hglib.open(vtemp)
         # get index.yaml
-        path_to_yaml = path_join(vtemp, 'index.yaml')
+        path_to_yaml = path_join(vtemp, vcs_subdir, 'index.yaml')
         yaml = yaml_load(file(path_to_yaml).read())
         recent_changes = []
         for entry in client.log('tip:tip^^'):
@@ -88,14 +88,14 @@ def get_yaml_from_mercurial(vcs_address):
         rmtree(vtemp)
 
 
-def get_yaml_from_git(vcs_address):
+def get_yaml_from_git(vcs_address, vcs_subdir):
     from subprocess import check_call, check_output
     # XXX: implement a check_output for python 2.6
     vtemp = mkdtemp(prefix='multipkg-vcs-')
     try:
         check_call(['git', 'clone', vcs_address, vtemp])
         # get index.yaml
-        path_to_yaml = path_join(vtemp, 'index.yaml')
+        path_to_yaml = path_join(vtemp, vcs_subdir, 'index.yaml')
         yaml = yaml_load(file(path_to_yaml).read())
         recent_changes = []
         recent_changes = check_output(['git', 'log', '-5', '--pretty=short'])

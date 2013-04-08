@@ -98,7 +98,9 @@ def get_yaml_from_git(vcs_address, vcs_subdir):
         path_to_yaml = path_join(vtemp, vcs_subdir, 'index.yaml')
         yaml = yaml_load(file(path_to_yaml).read())
         recent_changes = []
-        recent_changes = check_output(['git', 'log', '-5', '--pretty=short'])
+        recent_changes = check_output(['git', '--git-dir',
+                                       path_join(vtemp, '.git'),
+                                       'log', '-5', '--pretty=short'])
         yaml['.'] = dict(recent_changes=recent_changes)
         return yaml
     except:

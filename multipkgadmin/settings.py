@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'django_tables2',
     'social_auth',
+    'bootstrapform',
 
     'multipkgadmin',
     'account',

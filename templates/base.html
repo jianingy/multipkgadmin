@@ -2,57 +2,69 @@
 {% load base_extras %}
 
 <!doctype html>
-<html>
+<html lang="en">
     <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
         <title>{% block page_title %} {% endblock %}</title>
-        <link rel="stylesheet" href="{{ STATIC_URL }}style.css" />
         {% block header %}{% endblock %}
     </head>
 
     <body>
-        <div id="topstroke">&nbsp;</div>
-        <div class="navbar-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li><a href="/">Home</a></li>
-                            <li class="{% active_by_name request 'multipkg_home' %}">
-                                <a href="{% url 'multipkg_home' %}">Packages</a>
-                            </li>
-                            <li><a href="{{ wiki_url }}/MultipkgStart">Wiki</a></li>
-                            <li><a href="{{ wiki_url }}/Release">Download</a></li>
-                            <li><a href="{{ wiki_url }}/AboutUS">About Us</a></li>
-                        </ul>
-                        <ul class="nav pull-right">
-
-                            {% if user.username %}
-                            <li>welcome, {{ user.username }}</li>
-                            <li class="{% active_by_name request 'account_profile' %}">
-                                <a href="{% url 'account.views.profile' %}">my profile</a>
-                            </li>
-                            <li><a href="{% url 'account.views.logout' %}">log out</a></li>
-                            {% else %}
-                            <li><a href="{% url 'account.views.login' %}">log in</a></li>
-                            <li><a href="{% url 'account.views.registration' %}">sign up</a></li>
-                            {% endif %}
-                        </ul>
+        <div id="wrap">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="brand" href="#">MultiPKG.in</a>
+                        <div class="nav-collapse collapse">
+                            <ul class="nav">
+                                <li><a href="/">Home</a></li>
+                                <li class="{% active_by_name request 'multipkg_home' %}">
+                                    <a href="{% url 'multipkg_home' %}">Packages</a>
+                                </li>
+                                <li><a href="{{ wiki_url }}/MultipkgStart">Wiki</a></li>
+                                <li><a href="{{ wiki_url }}/Release">Download</a></li>
+                                <li><a href="{{ wiki_url }}/AboutUS">About Us</a></li>
+                            </ul>
+                            <ul class="nav pull-right">
+                                {% if user.username %}
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">welcome, {{ user.username }} <b class="caret"></b></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'account.views.profile' %}">user profile</a></li>
+                                        <li><a href="{% url 'account.views.logout' %}">log out</a></li>
+                                    </ul>
+                                </li>
+                                {% else %}
+                                <li><a href="{% url 'account.views.login' %}">log in</a></li>
+                                <li><a href="{% url 'account.views.registration' %}">sign up</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <div class="clear"></div>
             </div>
-        </div>
 
-        <div id="body">
+
             <div class="container">
 	            <div id="content">
                     {% block content %}{% endblock %}
 	            </div>
             </div>
+            <div id="push"></div>
         </div>
+
         <div id="footer">
-            <div class="container">
+            <div class="container text-center">
+                <p class="muted credit">multipkg.in</p>
             </div>
         </div>
+
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+        <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     </body>
 </html>

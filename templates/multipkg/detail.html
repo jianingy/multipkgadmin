@@ -1,47 +1,55 @@
 {% extends "multipkg/base.html" %}
 
 {% block multipkg_content %}
-<div class="operation right">
-    <a href="{% url 'multipkg_home' %}"> multipkg home </a> | <a href="{% url 'multipkg.views.sync_view' pk=object.pk %}" > refresh package information </a>
+<div class="text-right">
+    <a href="{% url 'multipkg_home' %}" class="btn"> <b class="icon-backward"></b> back </a>
+    <a href="{% url 'multipkg.views.sync_view' pk=object.pk %}" class="btn"> refresh</a>
 </div>
-<h2>package details: <i>{{ object.name }} {{ object.version }}-{{ object.release }}</i></h2>
-<table class="package-detail">
-    <tr>
-        <th>name</th>
-        <td>{{ object.name }}</td>
-    </tr>
-    <tr>
-        <th>version</th>
-        <td>{{ object.version }}</td>
-    </tr>
-    <tr>
-        <th>release</th>
-        <td>{{ object.release }}</td>
-    </tr>
-    <tr>
-        <th>build</th>
-        <td>{{ object.build }}</td>
-    </tr>
-    <tr>
-        <th>owner</th>
-        <td>{{ object.owner }}</td>
-    </tr>
-    <tr>
-        <th>version control system</th>
-        <td><b> {{ object.get_vcs_type_display }} </b> <br/> <a href="{{ object.vcs_address }}" target="_blank">{{ object.vcs_address }}</a></td>
-    </tr>
-    <tr>
-        <th>first created</th>
-        <td>{{ object.created }}</td>
-    </tr>
-    <tr>
-        <th>last modified</th>
-        <td>{{ object.last_modified }}</td>
-    </tr>
+<h2>package details: <i class="text-success">{{ object.name }} {{ object.version }}-{{ object.release }}</i></h2>
+<dl class="dl-horizontal">
+        <dt>name</dt>
+        <dd>&nbsp;
+            {{ object.name }}
+        </dd>
 
-</table>
+        <dt>version</dt>
+        <dd>&nbsp;
+            {{ object.version }}
+        </dd>
+
+        <dt>release</dt>
+        <dd>&nbsp;
+            {{ object.release }}
+        </dd>
+
+        <dt>build</dt>
+        <dd>&nbsp;
+            {{ object.build }}
+        </dd>
+
+        <dt>owner</dt>
+        <dd>&nbsp;
+            {{ object.owner }}
+        </dd>
+
+        <dt>version control system</dt>
+        <dd>&nbsp;
+            <b> {{ object.get_vcs_type_display }} </b> <a href="{{ object.vcs_address }}" target="_blank">{{ object.vcs_address }}</a>
+        </dd>
+
+        <dt>first created</dt>
+        <dd>&nbsp;
+            {{ object.created }}
+        </dd>
+
+        <dt>last modified</dt>
+        <dd>&nbsp;
+            {{ object.last_modified }}
+        </dd>
+
+</dl>
 <h3> Summary </h3>
-<div class="section">
+<div>
     {{ object.summary }}
 </div>
 
@@ -50,12 +58,12 @@
 
 <h3> Latest Comments </h3>
 <div>
-    <form class="form" action="{% url 'multipkg.views.comment_view' %}" method="POST">
+    <form action="{% url 'multipkg.views.comment_view' %}" method="POST">
         {% csrf_token %}
-        <ol>
-            <li><textarea name="comment" class="comment"></textarea></li>
-            <li><button>add comment</button></li>
-        </ol>
+        <div>
+            <textarea name="comment" rows="5" style="width:98%"></textarea>
+        </div>
+        <button class="btn">add comment</button>
         <input type="hidden" name="package" value="{{object.id}}">
     </form>
     {% for comment in comments %}

@@ -22,6 +22,7 @@ class PackageTable(tables.Table):
 #        template_name="dns/ddns/table_action.html")
 
     class Meta:
+        attrs = {'class': 'table table-hover'}
         model = Package
         fields = ('name', 'version', 'build', 'release', 'owner', )
         sequence = ('name', 'version', 'build', 'release', 'owner', )

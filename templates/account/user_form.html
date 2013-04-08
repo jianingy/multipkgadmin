@@ -1,16 +1,20 @@
 {% extends "base.html" %}
+{% load bootstrap %}
 {% block content %}
-<div class="content-wrapper narrow">
-    <h2>Profile: <i>{{user.username}}</i></h2>
-        <form action="" method="post" class="form">
+<h2>Profile: <i class="text-success">{{user.username}}</i></h2>
+<div class="row">
+    <div class="span3"></div>
+    <div class="span4">
+        <form action="" method="post" class="form-horizontal">
             {% csrf_token %}
-            <ol>
-                <li><label>username:</label><b>{{ user.username }}</b></li>
-                {{ form.as_ul }}
-                <li id="send">
-                    <button type="submit">Update</button>
-                </li>
-            </ol>
+            {{ form | bootstrap }}
+            <div class="control-groups">
+                <div class="controls">
+                    <button type="submit" class="btn btn-info">Update</button>
+                </div>
+            </div>
         </form>
     </div>
-    {% endblock %}
+    <div class="span3"></div>
+</div>
+{% endblock %}

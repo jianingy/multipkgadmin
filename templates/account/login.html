@@ -1,23 +1,26 @@
 {% extends "base.html" %}
+{% load bootstrap %}
 {% block content %}
-<div id="login" class="center">
-    <form action="" method="post" class="form">
-        {% csrf_token %}
-        <ol>
-            {{ login_form.as_ul }}
-            <li id="send">
-                <button type="submit" class="btn">Log In</button>
-            </li>
-        </ol>
-    </form>
+<div class="row">
+    <div class="span3"></div>
+    <div id="login" class="span6">
+        <ul class="unstyled">
+            <li><a href="{% url 'socialauth_begin' 'github' %}"><img src="http://github.com/favicon.ico" height="16" />Login with Github</a></li>
+            <li><a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img src="http://google.com/favicon.ico" height="16" />Login with Google</a></li>
+        </ul>
 
-    <p class="note">
-        Don't have an account? <a href="{% url 'account_register' %}">Sign up Now!</a> or Login with
-    </p>
-    <p class="note">
-        <a href="{% url 'socialauth_begin' 'github' %}"><img src="http://github.com/favicon.ico" height="16" /> Login with Github </a>
-        <a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img src="http://google.com/favicon.ico" height="16" /> Login with Google </a>
-    </p>
-
+        <hr />
+        <form action="" method="post" class="form-horizontal">
+            {% csrf_token %}
+            {{ login_form | bootstrap }}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary">Log In</button>
+                    <p>Don't have an account? <a href="{% url 'account_register' %}">Sign up Now!</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="span3"></div>
 </div>
 {% endblock %}

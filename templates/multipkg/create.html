@@ -1,19 +1,24 @@
 {% extends "multipkg/base.html" %}
-
+{% load bootstrap %}
 {% block multipkg_content %}
-<h2>upload a new package</h2>
 
-    <form method="post" class="form" enctype="multipart/form-data">
-        {% csrf_token %}
-        {# include "base_form.html" #}
-        <ol>
-            {{ form.as_ul }}
-            <li id="send">
-                <button type="submit" class="btn update">upload</button>
-                <button type="button" onclick="history.back(0);" class="btn">cancel</button>
-            </li>
-        </ol>
-    </form>
+<div class="hero-unit">
+
+    <div class="">
 
 
+        <form method="post" class="form-horizontal" enctype="multipart/form-data">
+            {% csrf_token %}
+            {# include "base_form.html" #}
+                {{ form | bootstrap }}
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">upload</button>
+                        <a href="javascript:history.back(0);" class="btn">cancel</a>
+                    </div>
+                </div>
+        </form>
+    </div>
+
+</div>
 {% endblock %}

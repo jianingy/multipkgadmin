@@ -7,8 +7,13 @@
 
 __author__ = 'Jianing Yang <jianingy.yang AT gmail DOT com>'
 
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 # from django.views.generic.base import TemplateView
+from multipkg.api import SearchResource
+from tastypie.api import Api
+
+v1_api = Api(api_name='1')
+v1_api.register(SearchResource())
 
 urlpatterns = patterns('multipkg.views',
                        url(r'^$', 'list_view', name='multipkg_home'),
@@ -18,4 +23,5 @@ urlpatterns = patterns('multipkg.views',
                        url(r'^detail/(?P<pk>\d+)/$', 'detail_view'),
                        url(r'^comment/delete/(?P<pk>\d+)/$',
                            'comment_delete_view'),
+                       url(r'^api/', include(v1_api.urls)),
 )

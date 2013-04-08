@@ -8,3 +8,4 @@ south
 django-grappelli
 Mercurial
 python-hglib
+django-tastypie

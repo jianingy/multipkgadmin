@@ -181,7 +181,7 @@ AUTHENTICATION_BACKENDS = (
 ADMIN_MEDIA_PREFIX = STATIC_URL + "grappelli/"
 AUTH_PROFILE_MODULE = 'account.UserProfile'
 LOGIN_URL          = "/account/login"
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/multipkg'
 LOGIN_ERROR_URL    = '/login-error/'
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
 

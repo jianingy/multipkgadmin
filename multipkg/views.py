@@ -39,7 +39,7 @@ class PackageTableView(SingleTableView):
             base_q = base_q.filter(Q(name__contains=wd)
                                   | Q(summary__contains=wd))
         elif fd == '1':
-            base_q = base_q.filter(owner=wd)
+            base_q = base_q.filter(owner__username=wd)
 
         return base_q.order_by('id')
 

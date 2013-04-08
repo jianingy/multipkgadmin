@@ -25,7 +25,7 @@ class Package(models.Model):
     vcs_type       = models.IntegerField(_('version control system'),
                                          choices=VCS_TYPE,
                                          default=0)
-    vcs_address    = models.CharField(_('version control base address'),
+    vcs_address    = models.CharField(_('base address'),
                                       max_length=512)
     vcs_subdir     = models.CharField(_('package directory'),
                                       max_length=512, null=True, blank=True)

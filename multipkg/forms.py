@@ -88,7 +88,10 @@ class PackageCreateForm(forms.ModelForm):
     class Meta:
         model = Package
         fields = ('vcs_type', 'vcs_address', 'vcs_subdir')
-
+        widgets = {
+            'vcs_address': forms.TextInput(attrs={'class': 'input-xxlarge'}),
+            'vcs_subdir': forms.TextInput(attrs={'class': 'input-xxlarge'}),
+        }
 
 class CommentCreateForm(forms.ModelForm):
 

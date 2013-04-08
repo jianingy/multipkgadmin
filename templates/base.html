@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.css" />
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/auth-buttons.css" />
         <link rel="stylesheet" href="{{ STATIC_URL }}css/footer.css" />
         <title>{% block page_title %} {% endblock %}</title>
         {% block header %}{% endblock %}
@@ -21,13 +22,17 @@
                         <a class="brand" href="#">MultiPKG.in</a>
                         <div class="nav-collapse collapse">
                             <ul class="nav">
-                                <li><a href="/">Home</a></li>
-                                <li class="{% active_by_name request 'multipkg_home' %}">
-                                    <a href="{% url 'multipkg_home' %}">Packages</a>
+                                <li>
+                                    <a href="{% url 'multipkg_home' %}">all packages</a>
                                 </li>
-                                <li><a href="{{ wiki_url }}/MultipkgStart">Wiki</a></li>
-                                <li><a href="{{ wiki_url }}/Release">Download</a></li>
-                                <li><a href="{{ wiki_url }}/AboutUS">About Us</a></li>
+                                {% if user.username %}
+                                <li>
+                                    <a href="{% url 'multipkg_home' %}?wd={{ user.username }}">my packages</a>
+                                </li>
+                                {% endif %}
+                                <li><a href="{{ wiki_url }}/MultipkgStart">wiki</a></li>
+                                <li><a href="{{ wiki_url }}/Release">download</a></li>
+                                <li><a href="{{ wiki_url }}/AboutUS">about us</a></li>
                             </ul>
                             <ul class="nav pull-right">
                                 {% if user.username %}

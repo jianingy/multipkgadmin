@@ -5,81 +5,87 @@
     <a href="{% url 'multipkg_home' %}" class="btn"> <b class="icon-backward"></b> back </a>
     <a href="{% url 'multipkg.views.sync_view' pk=object.pk %}" class="btn"> refresh</a>
 </div>
-<h2>package details: <i class="text-success">{{ object.name }} {{ object.version }}-{{ object.release }}</i></h2>
-<dl class="dl-horizontal">
+<hr />
+<div class="hero-unit">
+    <h2>package details: <i class="text-success">{{ object.name }} {{ object.version }}-{{ object.release }}</i></h2>
+    <dl class="dl-horizontal">
         <dt>name</dt>
         <dd>&nbsp;
-            {{ object.name }}
+        {{ object.name }}
         </dd>
 
         <dt>version</dt>
         <dd>&nbsp;
-            {{ object.version }}
+        {{ object.version }}
         </dd>
 
         <dt>release</dt>
         <dd>&nbsp;
-            {{ object.release }}
+        {{ object.release }}
         </dd>
 
         <dt>build</dt>
         <dd>&nbsp;
-            {{ object.build }}
+        {{ object.build }}
         </dd>
 
         <dt>owner</dt>
         <dd>&nbsp;
-            {{ object.owner }}
+        {{ object.owner }}
         </dd>
 
         <dt>version control system</dt>
         <dd>&nbsp;
-            <b> {{ object.get_vcs_type_display }} </b> <a href="{{ object.vcs_address }}" target="_blank">{{ object.vcs_address }}</a>
+        <b> {{ object.get_vcs_type_display }} </b> <a href="{{ object.vcs_address }}" target="_blank">{{ object.vcs_address }}</a>
         </dd>
 
         <dt>first created</dt>
         <dd>&nbsp;
-            {{ object.created }}
+        {{ object.created }}
         </dd>
 
         <dt>last modified</dt>
         <dd>&nbsp;
-            {{ object.last_modified }}
+        {{ object.last_modified }}
         </dd>
 
-</dl>
-<h3> Summary </h3>
-<div>
-    {{ object.summary }}
+    </dl>
+    <h3> Summary </h3>
+    <div>
+        {{ object.summary }}
+    </div>
 </div>
-
-<h3> Recent Changes </h3>
-<pre class="section">{{ object.recent_changes }}</pre>
-
-<h3> Latest Comments </h3>
-<div>
-    <form action="{% url 'multipkg.views.comment_view' %}" method="POST">
-        {% csrf_token %}
+<div class="row">
+    <div class="span6">
+        <h3> Recent Changes </h3>
+        <pre class="section">{{ object.recent_changes }}</pre>
+    </div>
+    <div class="span6">
+        <h3> Latest Comments </h3>
         <div>
-            <textarea name="comment" rows="5" style="width:98%"></textarea>
-        </div>
-        <button class="btn">add comment</button>
-        <input type="hidden" name="package" value="{{object.id}}">
-    </form>
-    {% for comment in comments %}
-    <div class="comment">
-        <h4>Comment by {{comment.author}} <span>{{comment.created}}</span></h4>
-        <div>
-            {{ comment.comment }}
-            <div class="delete">
-                {% if comment.author == request.user %}
-                <a onclick="return delete_comment();" href="{% url 'multipkg.views.comment_delete_view' pk=comment.id %}">delete</a>
-                {% endif %}
+            <form action="{% url 'multipkg.views.comment_view' %}" method="POST">
+                {% csrf_token %}
+                <div>
+                    <textarea name="comment" rows="5" style="width:98%"></textarea>
+                </div>
+                <button class="btn">add comment</button>
+                <input type="hidden" name="package" value="{{object.id}}">
+                </form>
+                {% for comment in comments %}
+                <div class="comment">
+                    <h4>Comment by {{comment.author}} <span>{{comment.created}}</span></h4>
+                    <div>
+                        {{ comment.comment }}
+                        <div class="delete">
+                            {% if comment.author == request.user %}
+                            <a onclick="return delete_comment();" href="{% url 'multipkg.views.comment_delete_view' pk=comment.id %}">delete</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
-    </div>
-    {% endfor %}
-</div>
 
 <script>
     function delete_comment() {

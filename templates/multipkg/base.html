@@ -7,7 +7,7 @@
     </li>
     {% if user.username %}
     <li>
-        <a href="{% url 'multipkg_home' %}?wd={{ user.username }}">my packages</a>
+        <a href="{% url 'multipkg_home' %}?fd=1&wd={{ user.username }}">my packages</a>
     </li>
     {% endif %}
 

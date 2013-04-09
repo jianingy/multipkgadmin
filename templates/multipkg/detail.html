@@ -1,5 +1,5 @@
 {% extends "multipkg/base.html" %}
-
+{% load base_extras %}
 {% block multipkg_content %}
 <hr />
 <div class="hero-unit">
@@ -32,7 +32,7 @@
 
         <dt>owner</dt>
         <dd>&nbsp;
-        {{ object.owner }}
+        {{ object.owner | hide_email}}
         </dd>
 
         <dt>version control system</dt>

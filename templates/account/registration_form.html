@@ -1,15 +1,39 @@
 {% extends "base.html" %}
+{% load bootstrap %}
 {% block content %}
-<div class="content-wrapper narrow">
-    <h2>New User</h2>
-        <form action="" method="post" class="form">
+<div style="height: 100px"></div>
+<div class="row">
+    <div class="span4 offset1">
+        <div class="page-head">
+            <h2>Register here</h2>
+        </div>
+        <form action="" method="post" class="form-horizontal">
             {% csrf_token %}
-            <ol>
-                {{ form.as_ul }}
-                <li id="send">
-                    <button type="submit">Register</button>
-                </li>
-            </ol>
+            {{ form | bootstrap }}
+            <div class="control-group">
+                <div class="controls">
+                    <button type="submit" class="btn btn-primary" >Register</button>
+                </div>
+            </div>
         </form>
     </div>
-    {% endblock %}
+    <div class="span4 offset2">
+        <div class="page-head">
+            <h2>or login with</h2>
+        </div>
+        <div class="text-center">
+            <p>
+                <a href="{% url 'socialauth_begin' 'github' %}" class="btn-auth btn-github large">
+                    Sign in with <b>Github</b>
+                </a>
+            </p>
+            <p>
+                <a href="{% url 'socialauth_begin' 'google-oauth2' %}" class="btn-auth btn-google large">
+                    Sign in with <b>Google</b>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

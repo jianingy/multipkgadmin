@@ -1,4 +1,5 @@
 # Create your views here.
+from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 from django.core.urlresolvers import reverse_lazy
@@ -9,6 +10,7 @@ from django.http import HttpResponse
 from django_tables2 import SingleTableView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic import ListView
 
 from multipkg.forms import PackageCreateForm, CommentCreateForm
 from multipkg.tables import PackageTable
@@ -51,7 +53,7 @@ class PackageDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PackageDetailView, self).get_context_data(**kwargs)
         q = Comment.objects.filter(package=self.get_object())
-        context['comments'] = q.order_by('-created').all()[:20]
+        context['comments'] = q.order_by('-created').all()[:10]
         context['comment_form'] = CommentCreateForm()
         return context
 
@@ -69,7 +71,7 @@ class PackageCreateView(CreateView):
 
 class CommentCreateView(CreateView):
     form_class = CommentCreateForm
-    template_name = 'multipkg/comment.html'
+    template_name = 'multipkg/comment_create.html'
 
     def get_initial(self):
         initial = super(CommentCreateView, self).get_initial()
@@ -82,6 +84,22 @@ class CommentCreateView(CreateView):
         self.object.save()
         return redirect(reverse_lazy('multipkg.views.detail_view',
                                      args=[self.object.package.id]))
+
+
+class CommentListView(ListView):
+
+    model = Comment
+    template_name = 'multipkg/comment_list.html'
+    context_object_name = 'comments'
+
+    def get_queryset(self):
+        self.package = get_object_or_404(Package, pk=self.args[0])
+        return self.model.objects.filter(package=self.package).order_by('-created')
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentListView, self).get_context_data(**kwargs)
+        context['package'] = self.package
+        return context
 
 
 def comment_delete_view(request, pk):
@@ -99,9 +117,10 @@ def comment_delete_view(request, pk):
 
 
 def sync_view(request, pk):
-    from multipkg.models import VCS_SUBVERSION, VCS_MERCURIAL
+    from multipkg.models import VCS_SUBVERSION, VCS_MERCURIAL, VCS_GIT
     from multipkg.utils import get_yaml_from_subversion
     from multipkg.utils import get_yaml_from_mercurial
+    from multipkg.utils import get_yaml_from_git
     from multipkg.forms import PackageCreateForm
 
     default_fields = PackageCreateForm.default_fields
@@ -109,9 +128,13 @@ def sync_view(request, pk):
     try:
         package = Package.objects.get(pk=pk)
         if package.vcs_type == VCS_SUBVERSION:
-            yaml = get_yaml_from_subversion(package.vcs_address)
+            yaml = get_yaml_from_subversion(package.vcs_address,
+                                            package.vcs_subdir)
         elif package.vcs_type == VCS_MERCURIAL:
-            yaml = get_yaml_from_mercurial(package.vcs_address)
+            yaml = get_yaml_from_mercurial(package.vcs_address,
+                                           package.vcs_subdir)
+        elif package.vcs_type == VCS_GIT:
+            yaml = get_yaml_from_git(package.vcs_address, package.vcs_subdir)
 
         default = yaml['default']
         map(lambda x: yaml['default'].setdefault(x, ''), default_fields)
@@ -128,12 +151,13 @@ def sync_view(request, pk):
         package.recent_changes = yaml['.']['recent_changes']
 
         package.save()
-        return HttpResponse('OK')
+        return HttpResponse('Package %s refreshed sucessfully' % package.name)
     except Package.DoesNotExist:
         return HttpResponse('NOTEXIST')
 
 list_view = PackageTableView.as_view()
 detail_view = PackageDetailView.as_view()
 create_view = login_required(PackageCreateView.as_view())
-comment_view = require_http_methods(['POST'])(
+comment_create_view = require_http_methods(['POST'])(
     login_required(CommentCreateView.as_view()))
+comment_list_view = CommentListView.as_view()

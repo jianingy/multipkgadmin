@@ -15,6 +15,10 @@ from multipkg.utils import RemotePackageNotFoundError, IndexNotFoundError
 from multipkg.utils import get_yaml_from_subversion
 from multipkg.utils import get_yaml_from_mercurial
 from multipkg.utils import get_yaml_from_git
+from yaml.composer import ComposerError
+import re
+
+VCS_BASE_RE = re.compile('^(svn|http|https|git|hg)://')
 
 
 class PackageCreateForm(forms.ModelForm):
@@ -31,6 +35,9 @@ class PackageCreateForm(forms.ModelForm):
 
         cleaned_data = self.cleaned_data
 
+        if not VCS_BASE_RE.match(cleaned_data['vcs_address']):
+            raise forms.ValidationError(_('invalid base address'))
+
         try:
             if cleaned_data['vcs_type'] == VCS_SUBVERSION:
                 yaml = get_yaml_from_subversion(cleaned_data['vcs_address'],
@@ -41,6 +48,8 @@ class PackageCreateForm(forms.ModelForm):
             elif cleaned_data['vcs_type'] == VCS_GIT:
                 yaml = get_yaml_from_git(cleaned_data['vcs_address'],
                                          cleaned_data['vcs_subdir'])
+        except ComposerError as e:
+            raise forms.ValidationError(_('syntax errors in index.yaml'))
         except IndexNotFoundError as e:
             raise forms.ValidationError(e)
         except RemotePackageNotFoundError as e:
@@ -92,6 +101,7 @@ class PackageCreateForm(forms.ModelForm):
             'vcs_address': forms.TextInput(attrs={'class': 'input-xxlarge'}),
             'vcs_subdir': forms.TextInput(attrs={'class': 'input-xxlarge'}),
         }
+
 
 class CommentCreateForm(forms.ModelForm):
 

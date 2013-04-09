@@ -28,7 +28,8 @@ class Package(models.Model):
     vcs_address    = models.CharField(_('base address'),
                                       max_length=512)
     vcs_subdir     = models.CharField(_('package directory'),
-                                      max_length=512, null=True, blank=True)
+                                      max_length=512,
+                                      default='', null=False, blank=True)
     owner          = models.ForeignKey(User)
     quality        = models.IntegerField(_('Quality'), default=0)
     update_key     = models.CharField(_('update_key'), max_length=32,

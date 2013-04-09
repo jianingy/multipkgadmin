@@ -1,0 +1,27 @@
+{% extends "multipkg/base.html" %}
+
+{% block multipkg_content %}
+
+<div class="page-header">
+    <h2>all comments of <a href="{% url 'multipkg_package_detail' pk=package.id %}">{{ package.name }} {{ package.version }}</a></h2>
+</div>
+
+{% for comment in comments %}
+
+<div class="comment">
+    <div class="header">
+        <h4>Comment by {{comment.author}} <small>{{comment.created}}</small>
+        <span class="pull-right">
+            {% if comment.author == request.user %}
+            <a onclick="return delete_comment();" href="{% url 'multipkg.views.comment_delete_view' pk=comment.id %}" class="btn btn-danger btn-mini">delete</a>
+            {% endif %}
+        </span>
+        </h4>
+    </div>
+    <div>
+        {{ comment.comment }}
+    </div>
+</div>
+
+{% endfor %}
+{% endblock %}

@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+<ul class="nav nav-pills">
+    <li>
+        <a href="{% url 'multipkg_home' %}">all packages</a>
+    </li>
+    {% if user.username %}
+    <li>
+        <a href="{% url 'multipkg_home' %}?wd={{ user.username }}">my packages</a>
+    </li>
+    {% endif %}
+
+</ul>
 {% block multipkg_content %}{% endblock %}
 {% endblock %}

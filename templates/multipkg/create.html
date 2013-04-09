@@ -3,22 +3,20 @@
 {% block multipkg_content %}
 
 <div class="hero-unit">
-
-    <div class="">
-
-
-        <form method="post" class="form-horizontal" enctype="multipart/form-data">
-            {% csrf_token %}
-            {# include "base_form.html" #}
-                {{ form | bootstrap }}
-                <div class="control-group">
-                    <div class="controls">
-                        <button type="submit" class="btn btn-primary">upload</button>
-                        <a href="javascript:history.back(0);" class="btn">cancel</a>
-                    </div>
-                </div>
-        </form>
+    <div class="page-header">
+        <h1>submit a new package</h1>
     </div>
+    <form method="post" class="form-horizontal" enctype="multipart/form-data">
+        {% csrf_token %}
+        {# include "base_form.html" #}
+        {{ form | bootstrap }}
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">upload</button>
+                <a href="{% url 'multipkg_home' %}" class="btn">cancel</a>
+            </div>
+        </div>
+    </form>
 
 </div>
 {% endblock %}

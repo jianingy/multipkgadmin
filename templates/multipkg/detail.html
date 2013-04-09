@@ -1,13 +1,14 @@
 {% extends "multipkg/base.html" %}
 
 {% block multipkg_content %}
-<div class="text-right">
-    <a href="{% url 'multipkg_home' %}" class="btn"> <b class="icon-backward"></b> back </a>
-    <a href="{% url 'multipkg.views.sync_view' pk=object.pk %}" class="btn"> refresh</a>
-</div>
 <hr />
 <div class="hero-unit">
-    <h2>package details: <i class="text-success">{{ object.name }} {{ object.version }}-{{ object.release }}</i></h2>
+    <div id="result"></div>
+    <h2>package details: <i class="text-success">{{ object.name }} {{ object.version }}</i>
+    <span class="text-right">
+        <a id="refresh" href="javascript:sync();" class="btn"> refresh</a>
+    </span>
+    </h2>
     <dl class="dl-horizontal">
         <dt>name</dt>
         <dd>&nbsp;
@@ -57,41 +58,55 @@
 </div>
 <div class="row">
     <div class="span6">
+        <h3> Latest Comments </h3>
+        <div>
+            <form action="{% url 'multipkg_comment_create' %}" method="POST">
+                {% csrf_token %}
+                <div>
+                    <textarea name="comment" rows="3" style="width:98%"></textarea>
+                </div>
+                <button class="btn">add comment</button>
+                <input type="hidden" name="package" value="{{object.id}}" />
+            </form>
+            {% for comment in comments %}
+            <div class="comment">
+                <div class="header">
+                    <h4>Comment by {{comment.author}} <small>{{comment.created}}</small>
+                    <span class="pull-right">
+                        {% if comment.author == request.user %}
+                        <a onclick="return delete_comment();" href="{% url 'multipkg.views.comment_delete_view' pk=comment.id %}" class="btn btn-danger btn-mini">delete</a>
+                        {% endif %}
+                    </span>
+                    </h4>
+                </div>
+                <div>
+                    {{ comment.comment }}
+                </div>
+            </div>
+            {% endfor %}
+            <ul class="nav nav-pills pull-right">
+                <li><a href="{% url 'multipkg_comment_list' package.id %}">view all comments</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="span5 offset1">
         <h3> Recent Changes </h3>
         <pre class="section">{{ object.recent_changes }}</pre>
     </div>
-    <div class="span6">
-        <h3> Latest Comments </h3>
-        <div>
-            <form action="{% url 'multipkg.views.comment_view' %}" method="POST">
-                {% csrf_token %}
-                <div>
-                    <textarea name="comment" rows="5" style="width:98%"></textarea>
-                </div>
-                <button class="btn">add comment</button>
-                <input type="hidden" name="package" value="{{object.id}}">
-                </form>
-                {% for comment in comments %}
-                <div class="comment">
-                    <h4>Comment by {{comment.author}} <span>{{comment.created}}</span></h4>
-                    <div>
-                        {{ comment.comment }}
-                        <div class="delete">
-                            {% if comment.author == request.user %}
-                            <a onclick="return delete_comment();" href="{% url 'multipkg.views.comment_delete_view' pk=comment.id %}">delete</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
+</div>
 
 <script>
     function delete_comment() {
         var yes = confirm('are you sure to delete this comment?');
         if (yes) return true;
         return false;
+    }
+    function sync() {
+      $('#refresh').html('<span>refreshing</span>').click(function() {return false;});
+      $.ajax({url: '{% url 'multipkg.views.sync_view' pk=object.pk %}'}).success(function(data) {
+        $('#result').html('<div class="alert alert-success">' + data + '</div>');
+        $('#refresh').remove();
+      });
     }
 </script>
 {% endblock %}

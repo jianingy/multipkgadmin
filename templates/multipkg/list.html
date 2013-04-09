@@ -2,25 +2,19 @@
 {% load django_tables2 %}
 
 {% block multipkg_content %}
-<div class="">
-<h3>Search Criteria</h3>
+<h4>Search Criteria</h4>
 <form class="form-inline" method="GET">
-
-        <label class="control-label" for="fd">Search by
-        <select name="fd">
-            <option value="0">Name,Summary</option>
-            <option value="1">Owner</option>
-        </select>
-        </label>
-        <label>Keywords:</label>
-        <div class="input-append">
+    <label class="control-label" for="fd">Search by
+    <select name="fd">
+        <option value="0">Name,Summary</option>
+        <option value="1">Owner</option>
+    </select>
+    </label>
+    <label>Keywords:</label>
+    <div class="input-append">
         <input name="wd" type="text" placeholder="search term" />
         <button class="btn">Search</button>
-        </div>
-        <div class="text-right">
-            <a href="{% url 'multipkg.views.create_view' %}" class="btn btn-info"><img src="{{ STATIC_URL }}img/create.png" /> submit a package </a>
-        </div>
+    </div>
 </form>
-</div>
-{% render_table table %}
+{% render_table table 'multipkg/table.html'%}
 {% endblock %}

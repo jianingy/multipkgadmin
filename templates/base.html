@@ -22,19 +22,18 @@
                         <a class="brand" href="#">MultiPKG.in</a>
                         <div class="nav-collapse collapse">
                             <ul class="nav">
-                                <li>
-                                    <a href="{% url 'multipkg_home' %}">all packages</a>
-                                </li>
-                                {% if user.username %}
-                                <li>
-                                    <a href="{% url 'multipkg_home' %}?wd={{ user.username }}">my packages</a>
-                                </li>
-                                {% endif %}
                                 <li><a href="{{ wiki_url }}/MultipkgStart">wiki</a></li>
                                 <li><a href="{{ wiki_url }}/Release">download</a></li>
                                 <li><a href="{{ wiki_url }}/AboutUS">about us</a></li>
                             </ul>
                             <ul class="nav pull-right">
+                                <li>
+                                    <ul class='unstyled'>
+                                        <li>
+                                            <a href="{% url 'multipkg.views.create_view' %}" class="btn btn-primary">submit a package </a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 {% if user.username %}
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">welcome, {{ user.username }} <b class="caret"></b></a>

@@ -8,7 +8,7 @@
 __author__ = 'Jianing Yang <jianingy.yang AT gmail DOT com>'
 
 from tempfile import mkdtemp
-from os.path import join as path_join
+from os.path import join as path_join, isdir
 from yaml import load as yaml_load
 from shutil import rmtree
 import datetime
@@ -17,6 +17,7 @@ import errno
 
 class RemotePackageNotFoundError(Exception):
     pass
+
 
 class IndexNotFoundError(Exception):
     pass
@@ -50,10 +51,12 @@ def get_yaml_from_subversion(vcs_address, vcs_subdir):
         else:
             raise
     except IOError as e:
-        if e.errno == errno.ENOENT:
-            raise IndexNotFoundError('index.yaml not found')
+        if e.errno == errno.ENOENT and e.filename.find('.yaml') > -1:
+            raise IndexNotFoundError('index.yaml not found in your repository')
+        raise
     finally:
-        rmtree(vtemp)
+        if isdir(vtemp):
+            rmtree(vtemp)
 
 
 def get_yaml_from_mercurial(vcs_address, vcs_subdir):
@@ -79,17 +82,18 @@ def get_yaml_from_mercurial(vcs_address, vcs_subdir):
     except HTTPError:
         raise RemotePackageNotFoundError(vcs_address)
     except IOError as e:
-        print e.message
-        if e.errno == errno.ENOENT:
-            raise IndexNotFoundError('index.yaml not found')
+        if e.errno == errno.ENOENT and e.filename.find('.yaml') > -1:
+            raise IndexNotFoundError('index.yaml not found in your repository')
+        raise
     except:
         raise
     finally:
-        rmtree(vtemp)
+        if isdir(vtemp):
+            rmtree(vtemp)
 
 
 def get_yaml_from_git(vcs_address, vcs_subdir):
-    from subprocess import check_call, check_output
+    from subprocess import check_call, check_output, CalledProcessError
     # XXX: implement a check_output for python 2.6
     vtemp = mkdtemp(prefix='multipkg-vcs-')
     try:
@@ -103,7 +107,12 @@ def get_yaml_from_git(vcs_address, vcs_subdir):
                                        'log', '-5', '--pretty=short'])
         yaml['.'] = dict(recent_changes=recent_changes)
         return yaml
-    except:
+    except IOError as e:
+        if e.errno == errno.ENOENT and e.filename.find('.yaml') > -1:
+            raise IndexNotFoundError('index.yaml not found in your repository')
         raise
+    except CalledProcessError:
+        raise RemotePackageNotFoundError(vcs_address)
     finally:
-        rmtree(vtemp)
+        if isdir(vtemp):
+            rmtree(vtemp)

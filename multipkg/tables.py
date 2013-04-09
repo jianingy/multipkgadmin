@@ -21,6 +21,9 @@ class PackageTable(tables.Table):
 #    operation = tables.TemplateColumn(
 #        template_name="dns/ddns/table_action.html")
 
+    def render_owner(self, value):
+        return str(value).replace('@', ' AT ')
+
     class Meta:
         attrs = {'class': 'table table-hover'}
         model = Package

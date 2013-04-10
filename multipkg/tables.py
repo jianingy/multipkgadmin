@@ -22,11 +22,11 @@ class PackageTable(tables.Table):
 #        template_name="dns/ddns/table_action.html")
 
     def render_owner(self, value):
-        return str(value).replace('@', ' AT ')
+        return "%s %s" % (value.first_name, value.last_name)
 
     class Meta:
         attrs = {'class': 'table table-hover'}
         model = Package
-        fields = ('name', 'version', 'build', 'release', 'owner', )
-        sequence = ('name', 'version', 'build', 'release', 'owner', )
+        fields = ('name', 'version',  'owner', 'summary')
+        sequence = ('name', 'version', 'owner', 'summary')
         orderable = False

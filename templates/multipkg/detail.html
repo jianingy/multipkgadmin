@@ -32,7 +32,7 @@
 
         <dt>owner</dt>
         <dd>&nbsp;
-        {{ object.owner | hide_email}}
+        {{ object.owner.first_name }} {{ object.owner.last_name }}
         </dd>
 
         <dt>version control system</dt>
